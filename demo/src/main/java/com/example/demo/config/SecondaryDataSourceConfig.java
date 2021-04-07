@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "secondaryEntityManagerFactory",
-        transactionManagerRef = "apiTransactionManager",
+        transactionManagerRef = "secondaryTransactionManager",
         basePackages = { "com.example.demo.secondary.repository" }
 )
 public class SecondaryDataSourceConfig {
@@ -49,7 +49,7 @@ public class SecondaryDataSourceConfig {
     }
 
     @Bean
-    public PlatformTransactionManager apiTransactionManager(@Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    public PlatformTransactionManager secondaryTransactionManager(@Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 }
