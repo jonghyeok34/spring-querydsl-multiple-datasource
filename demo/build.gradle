@@ -1,3 +1,8 @@
+buildscript {
+    ext {
+        queryDslVersion = "4.3.0"
+    }
+}
 plugins {
 	id 'org.springframework.boot' version '2.3.9.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -9,6 +14,14 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '8'
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
 
 repositories {
 	mavenCentral()
@@ -23,9 +36,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	
 	// query dsl
-	// implementation 'com.querydsl:querydsl-jpa'
-    // implementation 'com.querydsl:querydsl-apt'
-    // annotationProcessor 'com.querydsl:querydsl-apt'
+	implementation 'com.querydsl:querydsl-jpa'
+    implementation 'com.querydsl:querydsl-apt'
+    annotationProcessor 'com.querydsl:querydsl-apt'
 
 	runtimeOnly 'mysql:mysql-connector-java'
 
@@ -36,4 +49,18 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+    library = "com.querydsl:querydsl-apt"
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
