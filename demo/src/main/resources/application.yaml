@@ -1,0 +1,27 @@
+server:
+  port: 9090
+
+spring:
+  
+  jpa:
+    hibernate:
+        ddl-auto: create  # create or update
+        use-new-id-generator-mappings: false
+        naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+primary:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3307/SCHEMA_NAME?serverTimezone=UTC&characterEncoding=UTF-8
+        username: root
+        password: password
+
+secondary:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/SCHEMA_NAME?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: password
